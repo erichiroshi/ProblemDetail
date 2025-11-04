@@ -1,0 +1,15 @@
+public class DerivadaException extends PrincipalException {
+
+    @Override
+    public ProblemDetail toProblemDetail() {
+
+        ProblemDetail pb = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+
+        pb.setTitle("Derivada Exception");
+
+        pb.setProperty("timestamp", LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+
+        return pb;
+    }
+
+}

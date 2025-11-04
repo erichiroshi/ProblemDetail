@@ -1,0 +1,30 @@
+@ControllerAdvice
+public class RestHandlerAdvice {
+
+// Handler para cada exception criada
+    @ExceptionHandler(LoanNotAvailableException.class)
+    public ProblemDetail handleLoanException(LoanNotAvailableException e) {
+        return e.toProblemDetail();
+    }
+
+// Pegar excepions do Bean Validation
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+
+        List<InvalidParam> fieldErros = e.getFieldErrors()
+                .stream()
+                .map(f -> new InvalidParam(f.getField(), f.getDefaultMessage()))
+                .toList();
+
+        ProblemDetail pb = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+
+        pb.setTitle("Your request parameters didn't validate.");
+        pb.setProperty("invalid-params", fieldErros);
+
+        return pb;
+    }
+
+    private record InvalidParam(String error, String message) {
+    }
+
+}

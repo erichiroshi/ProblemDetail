@@ -1,0 +1,12 @@
+public class PrincipalExcpetion extends RuntimeException {
+
+    public ProblemDetail toProblemDetail() {
+        var pb = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        pb.setTitle("Principal internal server error");
+
+        pb.setProperty("timestamp", LocalDateTime.now());
+
+        return pb;
+    }
+}
